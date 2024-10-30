@@ -41,7 +41,40 @@
                 console.log(reason);
             });
     }
-
+    //这段代码的作用是将一个标签列表 allTags 转换为一个树形结构，便于处理和显示层级关系。
+    //对于输入标签 ["a/b/c", "a/b/d", "x/y"],tree 的结构会是：
+    // javascript
+    //     [
+    //     {
+    //         showTag: "a",
+    //         tag: "a",
+    //         parentTag: "",
+    //         children: [
+    //             {
+    //                 showTag: "b",
+    //                 tag: "a/b",
+    //                 parentTag: "a",
+    //                 children: [
+    //                     { showTag: "c", tag: "a/b/c", parentTag: "a/b", children: [] },
+    //                     { showTag: "d", tag: "a/b/d", parentTag: "a/b", children: [] }
+    //                 ]
+    //             }
+    //         ]
+    //     },
+    //         {
+    //             showTag: "x",
+    //             tag: "x",
+    //             parentTag: "",
+    //             children: [
+    //                 {
+    //                     showTag: "y",
+    //                     tag: "x/y",
+    //                     parentTag: "x",
+    //                     children: []
+    //                 }
+    //             ]
+    //         }
+    //     ];
     function filterTagtree(allTags) {
         let splitAllTags = [];
 
@@ -249,7 +282,7 @@
     </div>
 
     {#if pinTags.length !== 0}
-        <div class=" p-4 w-full text-sm text-yellow-500">置顶</div>
+        <div class=" p-4 w-full text-sm text-yellow-500">置顶(修改版)</div>
 
         {#each pinTags as { _id, tag }}
             <button
@@ -280,21 +313,21 @@
 
     {#if allTags.length !== 0}
         <div class="  p-4 pt-2 pb-2 w-full text-sm text-blue-500">标签</div>
-
+// 下面用于显示布置的标签
         {#each allTags as tag}
             <TagExpand
-                {...tag}
-                selectionTag={$searchNenoByTag.tag}
-                on:selectTag={(event) => {
-                    $searchNenoByTag.tag = event.detail;
 
-                }}
-                on:pinTag={(event) => {
-                    pinNeno(event.detail, true);
-                }}
-                on:renameTag={(event) => {
-                    renameName(event.detail);
-                }}
+                    {...tag}
+            selectionTag={$searchNenoByTag.tag}
+            on:selectTag={(event) => { // 监听 selectTag 事件，当用户点击选择标签时触发
+            $searchNenoByTag.tag = event.detail; // 更新全局的标签搜索状态，将选中的标签赋值给 $searchNenoByTag.tag
+        }}
+            on:pinTag={(event) => { // 监听 pinTag 事件，当用户点击置顶标签时触发
+            pinNeno(event.detail, true); // 调用 pinNeno 函数，将该标签置顶
+        }}
+            on:renameTag={(event) => { // 监听 renameTag 事件，当用户重命名标签时触发
+            renameName(event.detail); // 调用 renameName 函数，执行标签的重命名操作
+        }}
             />
         {/each}
     {/if}

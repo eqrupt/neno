@@ -14,7 +14,7 @@
         let setting = window.localStorage.getItem("settingStore");
         let github = window.localStorage.getItem("githubStore");
         let notion = window.localStorage.getItem("notionStore");
-
+        //短路求值
         github && ($githubStore = JSON.parse(github));
         notion && ($notionStore = JSON.parse(notion));
         setting && ($settingStore = JSON.parse(setting));
